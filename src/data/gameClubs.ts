@@ -1,4 +1,3 @@
-
 interface Club {
   name: string;
   image: string;
@@ -11,161 +10,160 @@ const gameClubs: Club[] = [
   {
     name: "Aston Villa",
     image:
-      "https://download.logo.wine/logo/Aston_Villa_F.C./Aston_Villa_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Aston_Villa_logo.svg/240px-Aston_Villa_logo.svg.png",
     stars: "4",
     league: "Premier League",
   },
   {
     name: "Brighton & Hove Albion",
     image:
-      "https://download.logo.wine/logo/Brighton_%26_Hove_Albion_F.C./Brighton_%26_Hove_Albion_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/f/fd/Brighton_%26_Hove_Albion_logo.svg/240px-Brighton_%26_Hove_Albion_logo.svg.png",
     stars: "4",
     league: "Premier League",
   },
   {
     name: "Burnley",
     image:
-      "https://download.logo.wine/logo/Burnley_F.C./Burnley_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/Burnley_FC_badge.png/240px-Burnley_FC_badge.png",
     stars: "4",
     league: "Premier League",
   },
   {
     name: "Chelsea",
     image:
-      "https://download.logo.wine/logo/Chelsea_F.C./Chelsea_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/240px-Chelsea_FC.svg.png",
     stars: "4.5",
     league: "Premier League",
   },
   {
     name: "Crystal Palace",
     image:
-      "https://download.logo.wine/logo/Crystal_Palace_F.C./Crystal_Palace_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Crystal_Palace_FC_logo_%282022%29.svg/370px-Crystal_Palace_FC_logo_%282022%29.svg.png",
     stars: "4",
     league: "Premier League",
   },
   {
     name: "Everton",
     image:
-      "https://download.logo.wine/logo/Everton_F.C./Everton_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Everton_FC_logo.svg/240px-Everton_FC_logo.svg.png",
     stars: "4",
     league: "Premier League",
   },
   {
     name: "Fulham",
     image:
-      "https://download.logo.wine/logo/Fulham_F.C./Fulham_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/Fulham_FC_%28shield%29.svg/240px-Fulham_FC_%28shield%29.svg.png",
     stars: "4",
     league: "Premier League",
   },
   {
     name: "Leeds United",
     image:
-      "https://download.logo.wine/logo/Leeds_United_F.C./Leeds_United_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Leeds_United_Logo.svg/240px-Leeds_United_Logo.svg.png",
     stars: "4",
     league: "Premier League",
   },
   {
     name: "Leicester City",
     image:
-      "https://download.logo.wine/logo/Leicester_City_F.C./Leicester_City_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/2/2d/Leicester_City_crest.svg/240px-Leicester_City_crest.svg.png",
     stars: "4",
     league: "Premier League",
   },
   {
     name: "Manchester City",
     image:
-      "https://download.logo.wine/logo/Manchester_City_F.C./Manchester_City_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/240px-Manchester_City_FC_badge.svg.png",
     stars: "5",
     league: "Premier League",
   },
   {
     name: "Newcastle United",
     image:
-      "https://download.logo.wine/logo/Newcastle_United_F.C./Newcastle_United_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Newcastle_United_Logo.svg/240px-Newcastle_United_Logo.svg.png",
     stars: "4.5",
     league: "Premier League",
   },
   {
     name: "Sheffield United",
     image:
-      "https://download.logo.wine/logo/Sheffield_United_F.C./Sheffield_United_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/f/fc/Sheffield_United_FC_logo.svg/240px-Sheffield_United_FC_logo.svg.png",
     stars: "3.5",
     league: "Premier League",
   },
   {
     name: "Southampton",
     image:
-      "https://download.logo.wine/logo/Southampton_F.C./Southampton_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/c/c9/FC_Southampton.svg/240px-FC_Southampton.svg.png",
     stars: "4",
     league: "Premier League",
   },
   {
     name: "Tottenham Hotspur",
     image:
-      "https://download.logo.wine/logo/Tottenham_Hotspur_F.C./Tottenham_Hotspur_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Tottenham_Hotspur.svg/240px-Tottenham_Hotspur.svg.png",
     stars: "4.5",
     league: "Premier League",
   },
   {
     name: "West Bromwich Albion",
     image:
-      "https://download.logo.wine/logo/West_Bromwich_Albion_F.C./West_Bromwich_Albion_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/8/8b/West_Bromwich_Albion.svg/240px-West_Bromwich_Albion.svg.png",
     stars: "3.5",
     league: "Premier League",
   },
   {
     name: "West Ham United",
     image:
-      "https://download.logo.wine/logo/West_Ham_United_F.C./West_Ham_United_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/West_Ham_United_FC_logo.svg/240px-West_Ham_United_FC_logo.svg.png",
     stars: "4",
     league: "Premier League",
   },
   {
     name: "Wolverhampton Wanderers",
     image:
-      "https://download.logo.wine/logo/Wolverhampton_Wanderers_F.C./Wolverhampton_Wanderers_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/f/fc/Wolverhampton_Wanderers.svg/240px-Wolverhampton_Wanderers.svg.png",
     stars: "4",
     league: "Premier League",
   },
   {
     name: "Liverpool",
     image:
-      "https://download.logo.wine/logo/Liverpool_F.C./Liverpool_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/240px-Liverpool_FC.svg.png",
     stars: "5",
     league: "Premier League",
   },
   {
     name: "Manchester United",
     image:
-      "https://download.logo.wine/logo/Manchester_United_F.C./Manchester_United_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/240px-Manchester_United_FC_crest.svg.png",
     stars: "5",
     league: "Premier League",
   },
   {
     name: "Nottingham Forest",
     image:
-      "https://download.logo.wine/logo/Nottingham_Forest_F.C./Nottingham_Forest_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Nottingham_Forest_logo.svg/240px-Nottingham_Forest_logo.svg.png",
     stars: "4",
     league: "Premier League",
   },
   {
     name: "Brentford",
     image:
-      "https://download.logo.wine/logo/Brentford_F.C./Brentford_F.C.-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/2/2a/Brentford_FC_crest.svg/240px-Brentford_FC_crest.svg.png",
     stars: "4",
     league: "Premier League",
   },
   {
     name: "Bournemouth",
     image:
-      "https://download.logo.wine/logo/AFC_Bournemouth/AFC_Bournemouth-Logo.wine.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/e/e5/AFC_Bournemouth_%282013%29.svg/240px-AFC_Bournemouth_%282013%29.svg.png",
     stars: "3.5",
     league: "Premier League",
   },
   {
     name: "Luton Town",
-    image:
-      "https://upload.wikimedia.org/wikipedia/en/thumb/2/2f/Luton_Town_FC_logo.svg/800px-Luton_Town_FC_logo.svg.png",
+    image: "https://upload.wikimedia.org/wikipedia/vi/8/8b/LutonTownFC2009.png",
     stars: "3",
     league: "Premier League",
   },
@@ -708,6 +706,233 @@ const gameClubs: Club[] = [
       "https://upload.wikimedia.org/wikipedia/en/thumb/3/3e/Le_Havre_AC_logo.svg/240px-Le_Havre_AC_logo.svg.png",
     stars: "3.5",
     league: "Ligue 1",
+  },
+
+  /* National Teams */
+
+  {
+    name: "Argentina",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/c/c1/Argentina_national_football_team_logo.svg/240px-Argentina_national_football_team_logo.svg.png",
+    stars: "5",
+    league: "National Team",
+  },
+  {
+    name: "France",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/5/58/France_national_football_team_logo.svg/240px-France_national_football_team_logo.svg.png",
+    stars: "5",
+    league: "National Team",
+  },
+  {
+    name: "Croatia",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/Croatia_national_football_team_logo.svg/240px-Croatia_national_football_team_logo.svg.png",
+    stars: "4.5",
+    league: "National Team",
+  },
+  {
+    name: "Morocco",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/f/f5/Morocco_national_football_team_logo.svg/240px-Morocco_national_football_team_logo.svg.png",
+    stars: "4",
+    league: "National Team",
+  },
+  {
+    name: "Brazil",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Brazil_national_football_team_logo.svg/240px-Brazil_national_football_team_logo.svg.png",
+    stars: "5",
+    league: "National Team",
+  },
+  {
+    name: "England",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/b/be/England_national_football_team_three_lions_badge.svg/240px-England_national_football_team_three_lions_badge.svg.png",
+    stars: "5",
+    league: "National Team",
+  },
+  {
+    name: "Portugal",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/5/5c/Portugal_national_football_team_logo.svg/240px-Portugal_national_football_team_logo.svg.png",
+    stars: "4.5",
+    league: "National Team",
+  },
+  {
+    name: "Netherlands",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/2/2e/Netherlands_national_football_team_logo_2023.svg/240px-Netherlands_national_football_team_logo_2023.svg.png",
+    stars: "4.5",
+    league: "National Team",
+  },
+  {
+    name: "Spain",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/7/79/Spain_national_football_team_logo.svg/240px-Spain_national_football_team_logo.svg.png",
+    stars: "4.5",
+    league: "National Team",
+  },
+  {
+    name: "Germany",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/e/e3/Germany_national_football_team_logo_2023.svg/240px-Germany_national_football_team_logo_2023.svg.png",
+    stars: "4.5",
+    league: "National Team",
+  },
+  {
+    name: "Belgium",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/2/2f/Belgium_national_football_team_logo.svg/240px-Belgium_national_football_team_logo.svg.png",
+    stars: "4.5",
+    league: "National Team",
+  },
+  {
+    name: "Switzerland",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/e/e2/Switzerland_national_football_team_logo.svg/240px-Switzerland_national_football_team_logo.svg.png",
+    stars: "4",
+    league: "National Team",
+  },
+  {
+    name: "Japan",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/c/c4/Japan_national_football_team_logo.svg/240px-Japan_national_football_team_logo.svg.png",
+    stars: "4",
+    league: "National Team",
+  },
+  {
+    name: "South Korea",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Korea_Football_Association_logo.svg/240px-Korea_Football_Association_logo.svg.png",
+    stars: "4",
+    league: "National Team",
+  },
+  {
+    name: "Senegal",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/f/fd/Senegal_national_football_team_logo.svg/240px-Senegal_national_football_team_logo.svg.png",
+    stars: "4",
+    league: "National Team",
+  },
+  {
+    name: "USA",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/6/6e/USA_national_soccer_team_logo.svg/240px-USA_national_soccer_team_logo.svg.png",
+    stars: "4",
+    league: "National Team",
+  },
+  {
+    name: "Mexico",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/3/3e/Mexico_national_football_team_logo.svg/240px-Mexico_national_football_team_logo.svg.png",
+    stars: "4",
+    league: "National Team",
+  },
+  {
+    name: "Australia",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Australia_national_football_team_logo.svg/240px-Australia_national_football_team_logo.svg.png",
+    stars: "3.5",
+    league: "National Team",
+  },
+  {
+    name: "Poland",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Poland_national_football_team_logo.svg/240px-Poland_national_football_team_logo.svg.png",
+    stars: "4",
+    league: "National Team",
+  },
+  {
+    name: "Tunisia",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/3/3e/Tunisia_national_football_team_logo.svg/240px-Tunisia_national_football_team_logo.svg.png",
+    stars: "3.5",
+    league: "National Team",
+  },
+  {
+    name: "Cameroon",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Cameroon_national_football_team_logo.svg/240px-Cameroon_national_football_team_logo.svg.png",
+    stars: "3.5",
+    league: "National Team",
+  },
+  {
+    name: "Uruguay",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Uruguay_national_football_team_logo.svg/240px-Uruguay_national_football_team_logo.svg.png",
+    stars: "4",
+    league: "National Team",
+  },
+  {
+    name: "Canada",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/d/dc/Canada_soccer_2021.svg/240px-Canada_soccer_2021.svg.png",
+    stars: "3.5",
+    league: "National Team",
+  },
+  {
+    name: "Wales",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/3/3c/Wales_national_football_team_logo.svg/240px-Wales_national_football_team_logo.svg.png",
+    stars: "3.5",
+    league: "National Team",
+  },
+  {
+    name: "Serbia",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/Serbia_national_football_team_logo.svg/240px-Serbia_national_football_team_logo.svg.png",
+    stars: "4",
+    league: "National Team",
+  },
+  {
+    name: "Denmark",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/3/3e/Denmark_national_football_team_logo.svg/240px-Denmark_national_football_team_logo.svg.png",
+    stars: "4",
+    league: "National Team",
+  },
+  {
+    name: "Ghana",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/1/19/Ghana_national_football_team_logo.svg/240px-Ghana_national_football_team_logo.svg.png",
+    stars: "3.5",
+    league: "National Team",
+  },
+  {
+    name: "Iran",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/c/c1/Iran_national_football_team_logo.svg/240px-Iran_national_football_team_logo.svg.png",
+    stars: "3.5",
+    league: "National Team",
+  },
+  {
+    name: "Costa Rica",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/7/7f/Costa_Rica_national_football_team_logo.svg/240px-Costa_Rica_national_football_team_logo.svg.png",
+    stars: "3.5",
+    league: "National Team",
+  },
+  {
+    name: "Saudi Arabia",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/2/2f/Saudi_Arabia_national_football_team_logo.svg/240px-Saudi_Arabia_national_football_team_logo.svg.png",
+    stars: "3.5",
+    league: "National Team",
+  },
+  {
+    name: "Ecuador",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/Ecuador_national_football_team_logo.svg/240px-Ecuador_national_football_team_logo.svg.png",
+    stars: "3.5",
+    league: "National Team",
+  },
+  {
+    name: "Qatar",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/6/6e/Qatar_national_football_team_logo.svg/240px-Qatar_national_football_team_logo.svg.png",
+    stars: "3",
+    league: "National Team",
   },
 ];
 
