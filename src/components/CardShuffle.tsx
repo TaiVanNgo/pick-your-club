@@ -45,6 +45,13 @@ const CardShuffle: React.FC<CardShuffleProps> = ({
     );
   };
 
+  // Update current club when selected club changes (for navigation)
+  useEffect(() => {
+    if (!isShuffling && selectedClub) {
+      setCurrentClub(selectedClub);
+    }
+  }, [selectedClub, isShuffling]);
+
   useEffect(() => {
     if (isShuffling) {
       // Start with a rapid shuffle

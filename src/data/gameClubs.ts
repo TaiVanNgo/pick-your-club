@@ -87,7 +87,7 @@ const gameClubs: Club[] = [
   {
     name: "Sheffield United",
     image:
-      "https://upload.wikimedia.org/wikipedia/en/thumb/f/fc/Sheffield_United_FC_logo.svg/240px-Sheffield_United_FC_logo.svg.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/9/9c/Sheffield_United_FC_logo.svg/420px-Sheffield_United_FC_logo.svg.png",
     stars: "3.5",
     league: "Premier League",
   },
@@ -200,7 +200,7 @@ const gameClubs: Club[] = [
   {
     name: "Villarreal CF",
     image:
-      "https://upload.wikimedia.org/wikipedia/en/thumb/7/70/Villarreal_CF_logo.svg/240px-Villarreal_CF_logo.svg.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/7/70/Villarreal_CF_logo.svg/250px-Villarreal_CF_logo.svg.png",
     stars: "4.5",
     league: "La Liga",
   },
@@ -235,7 +235,7 @@ const gameClubs: Club[] = [
   {
     name: "RCD Mallorca",
     image:
-      "https://upload.wikimedia.org/wikipedia/en/thumb/d/d6/RCD_Mallorca_crest.svg/240px-RCD_Mallorca_crest.svg.png",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/e/e7/Real_Club_Deportivo_Mallorca_logo.svg/240px-Real_Club_Deportivo_Mallorca_logo.svg.png",
     stars: "4",
     league: "La Liga",
   },

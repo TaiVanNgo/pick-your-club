@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Shuffle, Trophy, Settings as SettingsIcon } from "lucide-react";
+import {
+  Shuffle,
+  Settings as SettingsIcon,
+  ChevronLeft,
+  ChevronRight,
+  Trophy,
+} from "lucide-react";
 import gameClubs, { Club } from "@/data/gameClubs";
 import CardShuffle from "@/components/CardShuffle";
 import CardSkeleton from "@/components/CardSkeleton";
 import SettingsDialog, { FilterSettings } from "@/components/SettingsDialog";
 
 const Index = () => {
-  const [selectedClub, setSelectedClub] = useState<Club | null>(null);
+  const [selectedClubs, setSelectedClubs] = useState<Club[]>([]);
+  const [activeClubIndex, setActiveClubIndex] = useState(0);
   const [isShuffling, setIsShuffling] = useState(false);
   const [showAnimation, setShowAnimation] = useState(true);
   const [openSettings, setOpenSettings] = useState(false);
@@ -18,7 +25,13 @@ const Index = () => {
     minStar: 3,
     maxStar: 5,
     selectedLeagues: Array.from(new Set(gameClubs.map((club) => club.league))),
+    numClubs: 1,
+    enableNationalTeams: false,
+    nationalTeamsCount: 1,
   });
+
+  // Get active club based on index
+  const activeClub = selectedClubs[activeClubIndex] || null;
 
   // Get unique leagues for filter options
   const availableLeagues = Array.from(
@@ -39,20 +52,68 @@ const Index = () => {
     setFilteredClubs(newFilteredClubs);
   }, [filterSettings]);
 
-  const pickRandomClub = () => {
+  const pickRandomClubs = () => {
     if (filteredClubs.length === 0) {
       // Handle case when no clubs match filters
       return;
     }
 
     setIsShuffling(true);
-    setSelectedClub(null);
+    setSelectedClubs([]);
+    setActiveClubIndex(0);
     setShowAnimation(true);
 
-    // Select random club from filtered list
-    const randomIndex = Math.floor(Math.random() * filteredClubs.length);
-    const randomClub = filteredClubs[randomIndex];
-    setSelectedClub(randomClub);
+    const randomClubs: Club[] = [];
+
+    // Split clubs into regular clubs and national teams
+    const regularClubs = filteredClubs.filter(
+      (club) => club.league !== "National Team",
+    );
+    const nationalTeams = filteredClubs.filter(
+      (club) => club.league === "National Team",
+    );
+
+    // Get random regular clubs
+    if (regularClubs.length > 0) {
+      const numRegularToSelect = Math.min(
+        filterSettings.numClubs,
+        regularClubs.length,
+      );
+      const tempRegularClubs = [...regularClubs];
+
+      for (let i = 0; i < numRegularToSelect; i++) {
+        if (tempRegularClubs.length === 0) break;
+
+        const randomIndex = Math.floor(Math.random() * tempRegularClubs.length);
+        const randomClub = tempRegularClubs[randomIndex];
+
+        tempRegularClubs.splice(randomIndex, 1);
+        randomClubs.push(randomClub);
+      }
+    }
+
+    // Get random national teams if enabled
+    if (filterSettings.enableNationalTeams && nationalTeams.length > 0) {
+      const numNationalToSelect = Math.min(
+        filterSettings.nationalTeamsCount,
+        nationalTeams.length,
+      );
+      const tempNationalTeams = [...nationalTeams];
+
+      for (let i = 0; i < numNationalToSelect; i++) {
+        if (tempNationalTeams.length === 0) break;
+
+        const randomIndex = Math.floor(
+          Math.random() * tempNationalTeams.length,
+        );
+        const randomTeam = tempNationalTeams[randomIndex];
+
+        tempNationalTeams.splice(randomIndex, 1);
+        randomClubs.push(randomTeam);
+      }
+    }
+
+    setSelectedClubs(randomClubs);
   };
 
   const handleShuffleComplete = () => {
@@ -62,6 +123,40 @@ const Index = () => {
 
   const handleApplySettings = (settings: FilterSettings) => {
     setFilterSettings(settings);
+  };
+
+  // Navigate between selected clubs
+  const showNextClub = useCallback(() => {
+    if (activeClubIndex < selectedClubs.length - 1) {
+      setActiveClubIndex((prev) => prev + 1);
+    }
+  }, [activeClubIndex, selectedClubs.length]);
+
+  const showPrevClub = useCallback(() => {
+    if (activeClubIndex > 0) {
+      setActiveClubIndex((prev) => prev - 1);
+    }
+  }, [activeClubIndex]);
+
+  // Get the button label based on selection settings
+  const getButtonLabel = () => {
+    let label = "";
+
+    // Regular clubs count
+    if (filterSettings.numClubs > 0) {
+      label += `${filterSettings.numClubs} Club${filterSettings.numClubs > 1 ? "s" : ""}`;
+    }
+
+    // National teams count if enabled
+    if (
+      filterSettings.enableNationalTeams &&
+      filterSettings.nationalTeamsCount > 0
+    ) {
+      if (label) label += " + ";
+      label += `${filterSettings.nationalTeamsCount} National Team${filterSettings.nationalTeamsCount > 1 ? "s" : ""}`;
+    }
+
+    return `Random ${label}`;
   };
 
   return (
@@ -81,7 +176,7 @@ const Index = () => {
 
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Button
-              onClick={pickRandomClub}
+              onClick={pickRandomClubs}
               disabled={isShuffling || filteredClubs.length === 0}
               size="lg"
               className="transform rounded-full bg-gradient-to-r from-blue-600 to-green-600 px-8 py-4 text-lg font-bold text-white shadow-2xl transition-all duration-200 hover:scale-105 hover:from-blue-700 hover:to-green-700 disabled:cursor-not-allowed disabled:opacity-50"
@@ -89,7 +184,7 @@ const Index = () => {
               <Shuffle
                 className={`mr-3 h-6 w-6 ${isShuffling ? "animate-spin" : ""}`}
               />
-              {isShuffling ? "Drawing a Club..." : "Random Club"}
+              {isShuffling ? "Drawing Clubs..." : getButtonLabel()}
             </Button>
 
             <Button
@@ -117,19 +212,71 @@ const Index = () => {
             )}
         </div>
 
+        {/* Multi-card display with navigation */}
+        <div className="mb-8">
+          {selectedClubs.length > 1 && !isShuffling && (
+            <div className="mb-4 flex items-center justify-center space-x-2">
+              <Button
+                onClick={showPrevClub}
+                disabled={activeClubIndex === 0}
+                variant="outline"
+                className="border-white/30 bg-white/10 text-white hover:bg-white/20"
+                aria-label="Previous club"
+              >
+                <ChevronLeft className="h-5 w-5" />
+                <span className="ml-1">Prev</span>
+              </Button>
+              <span className="px-4 font-medium text-white">
+                {activeClubIndex + 1} of {selectedClubs.length}
+              </span>
+              <Button
+                onClick={showNextClub}
+                disabled={activeClubIndex === selectedClubs.length - 1}
+                variant="outline"
+                className="border-white/30 bg-white/10 text-white hover:bg-white/20"
+                aria-label="Next club"
+              >
+                <span className="mr-1">Next</span>
+                <ChevronRight className="h-5 w-5" />
+              </Button>
+            </div>
+          )}
+        </div>
+
         {/* Card Shuffle Animation */}
         <div className="mb-16 flex justify-center">
-          {isShuffling || selectedClub ? (
+          {isShuffling || selectedClubs.length > 0 ? (
             <CardShuffle
+              key="club-display"
               clubs={filteredClubs}
               isShuffling={isShuffling}
-              selectedClub={selectedClub}
+              selectedClub={activeClub}
               onComplete={handleShuffleComplete}
             />
           ) : (
             <CardSkeleton />
           )}
         </div>
+
+        {/* Multiple Selection Indicator */}
+        {selectedClubs.length > 1 && !isShuffling && (
+          <div className="mb-10 flex justify-center">
+            <div className="flex space-x-2">
+              {selectedClubs.map((club, index) => (
+                <button
+                  key={`indicator-${club.name}`}
+                  onClick={() => setActiveClubIndex(index)}
+                  className={`h-3 w-3 rounded-full transition-all ${
+                    index === activeClubIndex
+                      ? "scale-125 bg-blue-500"
+                      : "bg-white/40 hover:bg-white/60"
+                  }`}
+                  aria-label={`View ${club.name}`}
+                />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Stats */}
         <div className="text-center">

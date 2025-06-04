@@ -9,7 +9,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Settings, Star } from "lucide-react";
+import { Settings, Star, Users, Flag } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface SettingsDialogProps {
@@ -24,6 +24,9 @@ export interface FilterSettings {
   minStar: number;
   maxStar: number;
   selectedLeagues: string[];
+  numClubs: number;
+  enableNationalTeams: boolean; // Whether to include national teams in selection
+  nationalTeamsCount: number; // Number of national teams to select
 }
 
 const SettingsDialog: React.FC<SettingsDialogProps> = ({
@@ -38,12 +41,22 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
   const [selectedLeagues, setSelectedLeagues] = useState<string[]>(
     currentSettings.selectedLeagues,
   );
+  const [numClubs, setNumClubs] = useState(currentSettings.numClubs || 1);
+  const [enableNationalTeams, setEnableNationalTeams] = useState(
+    currentSettings.enableNationalTeams || false,
+  );
+  const [nationalTeamsCount, setNationalTeamsCount] = useState(
+    currentSettings.nationalTeamsCount || 1,
+  );
 
   const handleApply = () => {
     onApplySettings({
       minStar,
       maxStar,
       selectedLeagues,
+      numClubs,
+      enableNationalTeams,
+      nationalTeamsCount,
     });
     onOpenChange(false);
   };
@@ -64,6 +77,12 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
     setSelectedLeagues([]);
   };
 
+  // Filter out national teams from leagues to display separately
+  const regularLeagues = availableLeagues.filter(
+    (league) => league !== "National Team",
+  );
+  const hasNationalTeams = availableLeagues.includes("National Team");
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="border-white/30 bg-white/20 text-white backdrop-blur-lg sm:max-w-md">
@@ -75,6 +94,78 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
         </DialogHeader>
 
         <div className="space-y-6">
+          {/* Number of Clubs Selector */}
+          <div className="space-y-4">
+            <h3 className="flex items-center font-semibold">
+              <Users className="mr-2 h-4 w-4 text-blue-300" />
+              Number of Clubs
+            </h3>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Regular Clubs</span>
+                <span className="text-sm font-bold">{numClubs}</span>
+              </div>
+              <Slider
+                value={[numClubs]}
+                min={1}
+                max={6}
+                step={1}
+                onValueChange={(value) => setNumClubs(value[0])}
+                className="[&>.relative>.absolute]:bg-gradient-to-r [&>.relative>.absolute]:from-blue-500 [&>.relative>.absolute]:to-green-500 [&>.relative]:bg-white/20"
+              />
+              <p className="mt-1 text-xs text-white/70">
+                Select between 1-6 regular clubs
+              </p>
+            </div>
+
+            {/* National Teams Selection */}
+            {hasNationalTeams && (
+              <div className="mt-4 space-y-3 border-t border-white/20 pt-3">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="enable-national-teams"
+                    checked={enableNationalTeams}
+                    onCheckedChange={(checked) =>
+                      setEnableNationalTeams(!!checked)
+                    }
+                    className="border-white/30 bg-white/20 data-[state=checked]:bg-blue-500"
+                  />
+                  <label
+                    htmlFor="enable-national-teams"
+                    className="flex cursor-pointer items-center text-sm font-medium leading-none"
+                  >
+                    <Flag className="mr-2 h-4 w-4 text-yellow-300" />
+                    Include National Teams
+                  </label>
+                </div>
+
+                {enableNationalTeams && (
+                  <div className="space-y-2 pl-6">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">National Teams</span>
+                      <span className="text-sm font-bold">
+                        {nationalTeamsCount}
+                      </span>
+                    </div>
+                    <Slider
+                      value={[nationalTeamsCount]}
+                      min={1}
+                      max={4}
+                      step={1}
+                      onValueChange={(value) => setNationalTeamsCount(value[0])}
+                      className="[&>.relative>.absolute]:bg-gradient-to-r [&>.relative>.absolute]:from-blue-500 [&>.relative>.absolute]:to-green-500 [&>.relative]:bg-white/20"
+                    />
+                    <p className="mt-1 text-xs text-white/70">
+                      Select {nationalTeamsCount} national team
+                      {nationalTeamsCount > 1 ? "s" : ""}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
           {/* Star Rating Filter */}
           <div className="space-y-4">
             <h3 className="flex items-center font-semibold">
@@ -98,7 +189,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
                     setMinStar(newMin);
                     if (newMin > maxStar) setMaxStar(newMin);
                   }}
-                  className="bg-white/30"
+                  className="[&>.relative>.absolute]:bg-gradient-to-r [&>.relative>.absolute]:from-blue-500 [&>.relative>.absolute]:to-green-500 [&>.relative]:bg-white/20"
                 />
               </div>
 
@@ -117,7 +208,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
                     setMaxStar(newMax);
                     if (newMax < minStar) setMinStar(newMax);
                   }}
-                  className="bg-white/30"
+                  className="[&>.relative>.absolute]:bg-gradient-to-r [&>.relative>.absolute]:from-blue-500 [&>.relative>.absolute]:to-green-500 [&>.relative]:bg-white/20"
                 />
               </div>
             </div>
@@ -126,7 +217,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
           {/* League Filter */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold">Leagues</h3>
+              <h3 className="font-semibold">Club Leagues</h3>
               <div className="flex gap-2">
                 <Button
                   variant="outline"
@@ -149,7 +240,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
 
             <ScrollArea className="h-40">
               <div className="space-y-2">
-                {availableLeagues.map((league) => (
+                {regularLeagues.map((league) => (
                   <div key={league} className="flex items-center space-x-2">
                     <Checkbox
                       id={`league-${league}`}
@@ -165,6 +256,25 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
                     </label>
                   </div>
                 ))}
+
+                {/* National Teams as a separate item with special styling */}
+                {hasNationalTeams && (
+                  <div className="mt-3 flex items-center space-x-2 border-t border-white/20 pt-3">
+                    <Checkbox
+                      id="league-National-Team"
+                      checked={selectedLeagues.includes("National Team")}
+                      onCheckedChange={() => toggleLeague("National Team")}
+                      className="border-white/30 bg-white/20 data-[state=checked]:bg-blue-500"
+                    />
+                    <label
+                      htmlFor="league-National-Team"
+                      className="flex cursor-pointer items-center text-sm font-medium leading-none"
+                    >
+                      <Flag className="mr-2 h-4 w-4 text-yellow-300" />
+                      National Teams
+                    </label>
+                  </div>
+                )}
               </div>
             </ScrollArea>
           </div>
