@@ -1,73 +1,79 @@
-# Welcome to your Lovable project
+# Pick Your Club - Random Team Selector
 
-## Project info
+**Live Demo:** [https://pick-your-club.vercel.app/](https://pick-your-club.vercel.app/)
 
-**URL**: https://lovable.dev/projects/c7550394-de69-4dac-bdb6-e6380fea5d3c
+"Pick Your Club" is a web application designed for soccer gamers (e.g., eFootball, PES, EA SPORTS FC) who want to add an element of surprise and challenge to their gameplay. Instead of always picking your favorite or strongest team, this tool allows you to randomly select clubs based on various customizable criteria.
 
-## How can I edit this code?
+## ⚽ Features
 
-There are several ways of editing your application.
+* **Random Club Selection:** Get one or more random clubs to play with.
+* **Filter by Star Rating:** Specify a minimum and maximum star rating for the clubs.
+* **Filter by League:** Choose specific leagues to include or exclude from the selection pool.
+* **Include National Teams:** Option to include national teams in the random selection.
+* **Number of Clubs:** Select how many regular clubs and national teams you want to pick.
+* **Sleek User Interface:** Modern and intuitive design for easy navigation and use.
+* **Responsive Design:** Works well on desktop and mobile devices.
 
-**Use Lovable**
+## 🎮 How to Use
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c7550394-de69-4dac-bdb6-e6380fea5d3c) and start prompting.
+1. **Visit the Live Demo:** [https://pick-your-club.vercel.app/](https://pick-your-club.vercel.app/)
+2. **Adjust Settings (Optional):**
+    * Click the "Settings" (gear) icon.
+    * Set your preferred star rating range.
+    * Select the leagues you want to include.
+    * Choose the number of regular clubs to pick.
+    * Enable "Include National Teams" and set the number of national teams if desired.
+    * Click "Apply Settings".
+3. **Pick Clubs:** Click the main "Shuffle" button.
+4. **View Results:** The application will display the randomly selected club(s). If multiple clubs are selected, you can navigate between them.
+5. **Enjoy your game!**
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🛠️ Technologies Used
 
-**Use your preferred IDE**
+* **React:** A JavaScript library for building user interfaces.
+* **TypeScript:** Superset of JavaScript that adds static typing.
+* **Tailwind CSS:** A utility-first CSS framework for rapid UI development.
+* **Vite:** A fast build tool and development server.
+* **Lucide React:** Beautiful and consistent icons.
+* **Shadcn/ui (Dialog, Slider, Checkbox, Button):** Re-usable components built using Radix UI and Tailwind CSS.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🚀 Getting Started Locally (Development)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+To run this project locally:
 
-Follow these steps:
+1. **Clone the repository:**
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+    ```bash
+    git clone <repository-url>
+    cd club-picker-pes-random
+    ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. **Install dependencies:**
 
-# Step 3: Install the necessary dependencies.
-npm i
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+3. **Run the development server:**
 
-**Edit a file directly in GitHub**
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    ```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+4. Open your browser and navigate to `http://localhost:8080` (or the port specified in your terminal).
 
-**Use GitHub Codespaces**
+## 📞 Contact
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+For questions or feedback, please contact:
 
-## What technologies are used for this project?
+* GitHub: TaiVanNgo
+* Email: [vantaingo.056@gmail.com](mailto:vantaingo.056@gmail.com)
+* Linkedin: [Tai Ngo](https://www.linkedin.com/in/taivanngo/)
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/c7550394-de69-4dac-bdb6-e6380fea5d3c) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Enjoy adding a new layer of fun to your soccer gaming sessions!
