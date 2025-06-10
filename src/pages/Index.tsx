@@ -12,15 +12,70 @@ import CardShuffle from "@/components/CardShuffle";
 import CardSkeleton from "@/components/CardSkeleton";
 import SettingsDialog, { FilterSettings } from "@/components/SettingsDialog";
 
+// ===================================================================
+//  HELPER FUNCTION: Fetches club details from the API
+// ===================================================================
+async function getClubDetails(clubName: string, apiKey: string | undefined) {
+  if (!apiKey || apiKey === "YOUR_API_FOOTBALL_KEY") {
+    console.error(
+      "API Key is missing. Make sure you have created a .env.local file and restarted your server.",
+    );
+    return;
+  }
+
+  const url = new URL("https://v3.football.api-sports.io/teams");
+  url.searchParams.append("search", clubName);
+
+  const options = {
+    method: "GET",
+    headers: {
+      "x-rapidapi-host": "v3.football.api-sports.io",
+      "x-rapidapi-key": apiKey,
+    },
+  };
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error(
+        `API Error: ${response.statusText} (Status: ${response.status})`,
+      );
+    }
+    const data = await response.json();
+    // console.log("datam ",);
+    if (data.response && data.response.length > 0) {
+      const teamData = data.response[0];
+      const { team: teamInfo, venue: venueInfo } = teamData;
+
+      // Logs the fetched details to the browser's developer console
+      console.group(
+        `%cAPI Details for: ${teamInfo.name}`,
+        "color: #10b981; font-weight: bold; font-size: 14px;",
+      );
+      console.log("Team Info:", teamInfo);
+      console.log("Venue Info:", venueInfo);
+      console.groupEnd();
+
+      return data.response[0].team.logo;
+    } else {
+      console.warn(`API: No details found for a club named '${clubName}'.`);
+    }
+  } catch (error: any) {
+    console.error("An error occurred during the API call:", error.message);
+  }
+}
+
+// ===================================================================
+//  MAIN REACT COMPONENT
+// ===================================================================
 const Index = () => {
   const [selectedClubs, setSelectedClubs] = useState<Club[]>([]);
   const [activeClubIndex, setActiveClubIndex] = useState(0);
   const [isShuffling, setIsShuffling] = useState(false);
-  const [showAnimation, setShowAnimation] = useState(true);
+  const [_showAnimation, setShowAnimation] = useState(true);
   const [openSettings, setOpenSettings] = useState(false);
   const [filteredClubs, setFilteredClubs] = useState<Club[]>(gameClubs);
-
-  // Default filter settings
+  const [clubImage, setClubImage] = useState("");
   const [filterSettings, setFilterSettings] = useState<FilterSettings>({
     minStar: 3,
     maxStar: 5,
@@ -30,15 +85,12 @@ const Index = () => {
     nationalTeamsCount: 1,
   });
 
-  // Get active club based on index
   const activeClub = selectedClubs[activeClubIndex] || null;
-
-  // Get unique leagues for filter options
   const availableLeagues = Array.from(
     new Set(gameClubs.map((club) => club.league)),
   ).sort();
 
-  // Apply filters when settings change
+  // Apply local filters when settings change
   useEffect(() => {
     const newFilteredClubs = gameClubs.filter((club) => {
       const starRating = parseFloat(club.stars);
@@ -52,11 +104,23 @@ const Index = () => {
     setFilteredClubs(newFilteredClubs);
   }, [filterSettings]);
 
-  const pickRandomClubs = () => {
-    if (filteredClubs.length === 0) {
-      // Handle case when no clubs match filters
-      return;
+  // ===============================================================
+  //  MODIFICATION: This useEffect fetches data for the active club
+  // ===============================================================
+  useEffect(() => {
+    if (activeClub && activeClub.name) {
+      const apiKey = "ad1de23ce3a8c2ff7416f93ef2581411";
+
+      getClubDetails(activeClub.name, apiKey).then((image) => {
+        if (image) {
+          setClubImage(image);
+        }
+      });
     }
+  }, [activeClub]);
+
+  const pickRandomClubs = () => {
+    if (filteredClubs.length === 0) return;
 
     setIsShuffling(true);
     setSelectedClubs([]);
@@ -64,8 +128,6 @@ const Index = () => {
     setShowAnimation(true);
 
     const randomClubs: Club[] = [];
-
-    // Split clubs into regular clubs and national teams
     const regularClubs = filteredClubs.filter(
       (club) => club.league !== "National Team",
     );
@@ -73,7 +135,6 @@ const Index = () => {
       (club) => club.league === "National Team",
     );
 
-    // Get random regular clubs
     if (regularClubs.length > 0) {
       const numRegularToSelect = Math.min(
         filterSettings.numClubs,
@@ -83,16 +144,13 @@ const Index = () => {
 
       for (let i = 0; i < numRegularToSelect; i++) {
         if (tempRegularClubs.length === 0) break;
-
         const randomIndex = Math.floor(Math.random() * tempRegularClubs.length);
         const randomClub = tempRegularClubs[randomIndex];
-
         tempRegularClubs.splice(randomIndex, 1);
         randomClubs.push(randomClub);
       }
     }
 
-    // Get random national teams if enabled
     if (filterSettings.enableNationalTeams && nationalTeams.length > 0) {
       const numNationalToSelect = Math.min(
         filterSettings.nationalTeamsCount,
@@ -102,17 +160,14 @@ const Index = () => {
 
       for (let i = 0; i < numNationalToSelect; i++) {
         if (tempNationalTeams.length === 0) break;
-
         const randomIndex = Math.floor(
           Math.random() * tempNationalTeams.length,
         );
         const randomTeam = tempNationalTeams[randomIndex];
-
         tempNationalTeams.splice(randomIndex, 1);
         randomClubs.push(randomTeam);
       }
     }
-
     setSelectedClubs(randomClubs);
   };
 
@@ -125,7 +180,6 @@ const Index = () => {
     setFilterSettings(settings);
   };
 
-  // Navigate between selected clubs
   const showNextClub = useCallback(() => {
     if (activeClubIndex < selectedClubs.length - 1) {
       setActiveClubIndex((prev) => prev + 1);
@@ -138,22 +192,23 @@ const Index = () => {
     }
   }, [activeClubIndex]);
 
-  // Get the button label based on selection settings
   const getButtonLabel = () => {
     let label = "";
 
-    // Regular clubs count
     if (filterSettings.numClubs > 0) {
-      label += `${filterSettings.numClubs} Club${filterSettings.numClubs > 1 ? "s" : ""}`;
+      label += `${filterSettings.numClubs} Club${
+        filterSettings.numClubs > 1 ? "s" : ""
+      }`;
     }
 
-    // National teams count if enabled
     if (
       filterSettings.enableNationalTeams &&
       filterSettings.nationalTeamsCount > 0
     ) {
       if (label) label += " + ";
-      label += `${filterSettings.nationalTeamsCount} National Team${filterSettings.nationalTeamsCount > 1 ? "s" : ""}`;
+      label += `${filterSettings.nationalTeamsCount} National Team${
+        filterSettings.nationalTeamsCount > 1 ? "s" : ""
+      }`;
     }
 
     return `Random ${label}`;
@@ -162,6 +217,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-900 via-green-800 to-blue-900">
       <div className="container mx-auto px-4 py-16">
+        {/* The rest of your JSX remains unchanged... */}
         <div className="mb-16 text-center">
           <div className="mb-8 flex flex-col items-center justify-center">
             <div className="mb-3 flex items-center">
@@ -190,7 +246,9 @@ const Index = () => {
               className="transform rounded-full bg-gradient-to-r from-blue-600 to-green-600 px-10 py-6 text-xl font-bold text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-green-700 hover:shadow-[0_0_25px_rgba(37,99,235,0.5)] disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Shuffle
-                className={`mr-3 h-7 w-7 ${isShuffling ? "animate-spin" : "animate-pulse"}`}
+                className={`mr-3 h-7 w-7 ${
+                  isShuffling ? "animate-spin" : "animate-pulse"
+                }`}
               />
               {isShuffling ? "Spinning the Wheel..." : getButtonLabel()}
             </Button>
@@ -265,6 +323,7 @@ const Index = () => {
           {isShuffling || selectedClubs.length > 0 ? (
             <CardShuffle
               key="club-display"
+              clubImage= {clubImage}
               clubs={filteredClubs}
               isShuffling={isShuffling}
               selectedClub={activeClub}

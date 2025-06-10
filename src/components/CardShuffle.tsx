@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 interface CardShuffleProps {
   clubs: Club[];
   isShuffling: boolean;
+  clubImage: string;
   selectedClub: Club | null;
   onComplete: () => void;
 }
@@ -13,6 +14,7 @@ interface CardShuffleProps {
 const CardShuffle: React.FC<CardShuffleProps> = ({
   clubs,
   isShuffling,
+  clubImage,
   selectedClub,
   onComplete,
 }) => {
@@ -106,7 +108,7 @@ const CardShuffle: React.FC<CardShuffleProps> = ({
               }`}
             >
               <img
-                src={currentClub.image}
+                src={clubImage}
                 alt={currentClub.name}
                 className="h-full w-full object-contain p-2"
                 onError={(e) => {
