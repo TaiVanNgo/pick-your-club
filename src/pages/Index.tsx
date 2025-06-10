@@ -11,59 +11,8 @@ import gameClubs, { Club } from "@/data/gameClubs";
 import CardShuffle from "@/components/CardShuffle";
 import CardSkeleton from "@/components/CardSkeleton";
 import SettingsDialog, { FilterSettings } from "@/components/SettingsDialog";
-
-// ===================================================================
-//  HELPER FUNCTION: Fetches club details from the API
-// ===================================================================
-async function getClubDetails(clubName: string, apiKey: string | undefined) {
-  if (!apiKey || apiKey === "YOUR_API_FOOTBALL_KEY") {
-    console.error(
-      "API Key is missing. Make sure you have created a .env.local file and restarted your server.",
-    );
-    return;
-  }
-
-  const url = new URL("https://v3.football.api-sports.io/teams");
-  url.searchParams.append("search", clubName);
-
-  const options = {
-    method: "GET",
-    headers: {
-      "x-rapidapi-host": "v3.football.api-sports.io",
-      "x-rapidapi-key": apiKey,
-    },
-  };
-
-  try {
-    const response = await fetch(url, options);
-    if (!response.ok) {
-      throw new Error(
-        `API Error: ${response.statusText} (Status: ${response.status})`,
-      );
-    }
-    const data = await response.json();
-    // console.log("datam ",);
-    if (data.response && data.response.length > 0) {
-      const teamData = data.response[0];
-      const { team: teamInfo, venue: venueInfo } = teamData;
-
-      // Logs the fetched details to the browser's developer console
-      console.group(
-        `%cAPI Details for: ${teamInfo.name}`,
-        "color: #10b981; font-weight: bold; font-size: 14px;",
-      );
-      console.log("Team Info:", teamInfo);
-      console.log("Venue Info:", venueInfo);
-      console.groupEnd();
-
-      return data.response[0].team.logo;
-    } else {
-      console.warn(`API: No details found for a club named '${clubName}'.`);
-    }
-  } catch (error: any) {
-    console.error("An error occurred during the API call:", error.message);
-  }
-}
+import BatchFetchIndicator from "@/components/BatchFetchIndicator";
+import { getClubDetails, getPlaceholderImage } from "@/utils/api";
 
 // ===================================================================
 //  MAIN REACT COMPONENT
@@ -84,6 +33,10 @@ const Index = () => {
     enableNationalTeams: false,
     nationalTeamsCount: 1,
   });
+  const [clubImagesCache, setClubImagesCache] = useState<
+    Record<string, string>
+  >({});
+  const [isBatchFetching, setIsBatchFetching] = useState(false);
 
   const activeClub = selectedClubs[activeClubIndex] || null;
   const availableLeagues = Array.from(
@@ -104,23 +57,102 @@ const Index = () => {
     setFilteredClubs(newFilteredClubs);
   }, [filterSettings]);
 
-  // ===============================================================
-  //  MODIFICATION: This useEffect fetches data for the active club
-  // ===============================================================
+  // Batch fetch all club images after randomization
+  const batchFetchClubImages = useCallback(async () => {
+    if (selectedClubs.length === 0 || isBatchFetching) return;
+
+    setIsBatchFetching(true);
+    console.log("Starting batch fetch of club images...");
+
+    const apiKey = import.meta.env.VITE_API_FOOTBALL_KEY;
+    const newCache = { ...clubImagesCache };
+    let fetchCount = 0;
+
+    // Process clubs that aren't already in the cache
+    const uncachedClubs = selectedClubs.filter((club) => !clubImagesCache[club.name]);
+
+    if (uncachedClubs.length === 0) {
+      console.log("All selected club images already cached.");
+      setIsBatchFetching(false);
+      return;
+    }
+
+    console.log(`Fetching images for ${uncachedClubs.length} clubs...`);
+    setFetchProgress({ completed: 0, total: uncachedClubs.length });
+
+    // Process each club one by one - the rate limiter in the API utility
+    // will handle throttling to avoid API rate limits
+    for (const club of uncachedClubs) {
+      try {
+        // Get the image URL or use placeholder
+        const image = await getClubDetails(club.name, apiKey);
+        const imageUrl = image || getPlaceholderImage(club.name);
+        
+        newCache[club.name] = imageUrl;
+        fetchCount++;
+        
+        // Update the cache immediately so it's available for the UI
+        setClubImagesCache(prevCache => ({
+          ...prevCache,
+          [club.name]: imageUrl
+        }));
+      } catch (error) {
+        // In case of error, use a placeholder
+        console.error(`Error fetching image for ${club.name}:`, error);
+        const placeholderUrl = getPlaceholderImage(club.name);
+        
+        // Still add to cache to prevent repeated requests
+        newCache[club.name] = placeholderUrl;
+        setClubImagesCache(prevCache => ({
+          ...prevCache,
+          [club.name]: placeholderUrl
+        }));
+      } finally {
+        // Always update progress regardless of success or failure
+        setFetchProgress(prev => ({
+          ...prev,
+          completed: prev.completed + 1
+        }));
+      }
+    }
+
+    console.log(`Batch fetch complete. Fetched ${fetchCount} new club images.`);
+    setIsBatchFetching(false);
+  }, [selectedClubs, clubImagesCache, isBatchFetching]);
+
+  // Track batch fetching progress
+  const [fetchProgress, setFetchProgress] = useState({ completed: 0, total: 0 });
+  
+  // Start batch fetching when selected clubs change and shuffling is done
+  useEffect(() => {
+    if (selectedClubs.length > 0 && !isShuffling) {
+      batchFetchClubImages();
+    }
+  }, [selectedClubs, isShuffling, batchFetchClubImages]);
+
+  // This useEffect fetches data for the active club
   useEffect(() => {
     if (activeClub && activeClub.name) {
-      // Clear previous club image immediately when changing clubs
-      setClubImage("");
+      if (clubImagesCache[activeClub.name]) {
+        // Use cached image if available
+        setClubImage(clubImagesCache[activeClub.name]);
+      } else {
+        // Fetch image if not in cache
+        const apiKey = import.meta.env.VITE_API_FOOTBALL_KEY;
 
-      const apiKey = import.meta.env.VITE_API_FOOTBALL_KEY;
+        getClubDetails(activeClub.name, apiKey).then((image) => {
+          const imageUrl = image || getPlaceholderImage(activeClub.name);
+          setClubImage(imageUrl);
 
-      getClubDetails(activeClub.name, apiKey).then((image) => {
-        if (image) {
-          setClubImage(image);
-        }
-      });
+          // Cache the image URL for future use
+          setClubImagesCache((prevCache) => ({
+            ...prevCache,
+            [activeClub.name]: imageUrl,
+          }));
+        });
+      }
     }
-  }, [activeClub]);
+  }, [activeClub, clubImagesCache]);
 
   const pickRandomClubs = () => {
     if (filteredClubs.length === 0) return;
@@ -306,6 +338,9 @@ const Index = () => {
                   {activeClubIndex + 1} <span className="opacity-60">of</span>{" "}
                   {selectedClubs.length}
                 </span>
+                {isBatchFetching && (
+                  <span className="ml-2 flex h-2 w-2 animate-pulse rounded-full bg-blue-400" title="Loading all team images"></span>
+                )}
               </div>
               <Button
                 onClick={showNextClub}
@@ -331,6 +366,7 @@ const Index = () => {
               isShuffling={isShuffling}
               selectedClub={activeClub}
               onComplete={handleShuffleComplete}
+              isBatchFetching={isBatchFetching}
             />
           ) : (
             <CardSkeleton />
@@ -381,6 +417,13 @@ const Index = () => {
           onApplySettings={handleApplySettings}
           availableLeagues={availableLeagues}
           currentSettings={filterSettings}
+        />
+
+        {/* Batch fetching indicator */}
+        <BatchFetchIndicator
+          isFetching={isBatchFetching}
+          completed={fetchProgress.completed}
+          total={fetchProgress.total}
         />
       </div>
     </div>

@@ -11,6 +11,7 @@
 * **Filter by League:** Choose specific leagues to include or exclude from the selection pool.
 * **Include National Teams:** Option to include national teams in the random selection.
 * **Number of Clubs:** Select how many regular clubs and national teams you want to pick.
+* **Image Caching:** Optimized image loading with smart caching to prevent repeated API calls.
 * **Sleek User Interface:** Modern and intuitive design for easy navigation and use.
 * **Responsive Design:** Works well on desktop and mobile devices.
 
@@ -26,7 +27,8 @@
     * Click "Apply Settings".
 3. **Pick Clubs:** Click the main "Shuffle" button.
 4. **View Results:** The application will display the randomly selected club(s). If multiple clubs are selected, you can navigate between them.
-5. **Enjoy your game!**
+5. **Navigate Between Teams:** If multiple teams were selected, use the Previous/Next buttons to view all selected clubs.
+6. **Enjoy your game!**
 
 ## 🛠️ Technologies Used
 
@@ -36,6 +38,8 @@
 * **Vite:** A fast build tool and development server.
 * **Lucide React:** Beautiful and consistent icons.
 * **Shadcn/ui (Dialog, Slider, Checkbox, Button):** Re-usable components built using Radix UI and Tailwind CSS.
+* **API-Football:** Integration with external API for team information and images.
+* **Rate Limiting:** Custom rate limiting utility for optimized API usage.
 
 ## 🚀 Getting Started Locally (Development)
 
@@ -56,7 +60,17 @@ To run this project locally:
     yarn install
     ```
 
-3. **Run the development server:**
+3. **Set up API key (Optional for club images):**
+   
+   Create a `.env.local` file in the project root with your API key:
+   
+   ```env
+   VITE_API_FOOTBALL_KEY=your_api_key_here
+   ```
+   
+   You can get a free API key from [API-Football](https://www.api-football.com/).
+
+4. **Run the development server:**
 
     ```bash
     npm run dev
@@ -64,7 +78,19 @@ To run this project locally:
     yarn dev
     ```
 
-4. Open your browser and navigate to `http://localhost:8080` (or the port specified in your terminal).
+5. Open your browser and navigate to `http://localhost:8080` (or the port specified in your terminal).
+
+## 🖼️ Image Caching Implementation
+
+The application implements smart caching for club images to improve performance and reduce API calls:
+
+1. **Initial Load:** When clubs are first randomized, a batch process fetches all selected club images in the background.
+2. **Rate Limiting:** The application uses a custom rate limiter to prevent hitting API limits during batch fetching.
+3. **Persistent Caching:** Once an image is loaded, it's stored in an in-memory cache for the duration of your session.
+4. **Fallback System:** If an image can't be loaded from the API, a dynamically generated placeholder is used instead.
+5. **Progress Tracking:** A visual indicator shows the progress of image loading during batch operations.
+
+This system ensures smooth navigation between multiple selected clubs without unnecessary API calls or loading delays.
 
 ## 📞 Contact
 

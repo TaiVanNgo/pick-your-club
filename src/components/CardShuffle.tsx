@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Club } from "@/data/gameClubs";
-import { Star } from "lucide-react";
+import { Star, Download } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 interface CardShuffleProps {
@@ -9,6 +9,7 @@ interface CardShuffleProps {
   clubImage: string;
   selectedClub: Club | null;
   onComplete: () => void;
+  isBatchFetching?: boolean;
 }
 
 const CardShuffle: React.FC<CardShuffleProps> = ({
@@ -17,6 +18,7 @@ const CardShuffle: React.FC<CardShuffleProps> = ({
   clubImage,
   selectedClub,
   onComplete,
+  isBatchFetching = false,
 }) => {
   const [currentClub, setCurrentClub] = useState<Club | null>(null);
   const [shuffleInterval, setShuffleInterval] = useState<NodeJS.Timeout | null>(
@@ -115,11 +117,6 @@ const CardShuffle: React.FC<CardShuffleProps> = ({
                   alt={currentClub.name}
                   className="h-full w-full object-contain p-2"
                   onLoad={() => setImageLoading(false)}
-                  onError={(e) => {
-                    setImageLoading(false);
-                    e.currentTarget.src =
-                      "https://via.placeholder.com/96x96/cccccc/666666?text=FC";
-                  }}
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-gray-200">
@@ -141,11 +138,18 @@ const CardShuffle: React.FC<CardShuffleProps> = ({
           </div>
 
           <div className="mt-6 border-t border-white/20 pt-4">
-            <p className="text-sm text-white/80">
-              {isShuffling
-                ? "Choosing your destiny..."
-                : "Your destiny awaits on the pitch! 🏆"}
-            </p>
+            <div className="text-sm text-white/80">
+              {isShuffling ? (
+                <p>Choosing your destiny...</p>
+              ) : isBatchFetching ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Download className="h-4 w-4 animate-bounce text-blue-300" />
+                  <p>Optimizing images for a smoother experience...</p>
+                </div>
+              ) : (
+                <p>Your destiny awaits on the pitch! 🏆</p>
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>
