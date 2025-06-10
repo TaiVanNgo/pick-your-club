@@ -109,7 +109,10 @@ const Index = () => {
   // ===============================================================
   useEffect(() => {
     if (activeClub && activeClub.name) {
-      const apiKey = process.env.NEXT_PUBLIC_API_FOOTBALL_KEY;
+      // Clear previous club image immediately when changing clubs
+      setClubImage("");
+      
+      const apiKey = import.meta.env.VITE_API_FOOTBALL_KEY;
 
       getClubDetails(activeClub.name, apiKey).then((image) => {
         if (image) {

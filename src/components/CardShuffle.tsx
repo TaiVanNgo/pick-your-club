@@ -22,6 +22,7 @@ const CardShuffle: React.FC<CardShuffleProps> = ({
   const [shuffleInterval, setShuffleInterval] = useState<NodeJS.Timeout | null>(
     null,
   );
+  const [imageLoading, setImageLoading] = useState(false);
 
   // Render star rating display
   const renderStars = (stars: string) => {
@@ -51,8 +52,9 @@ const CardShuffle: React.FC<CardShuffleProps> = ({
   useEffect(() => {
     if (!isShuffling && selectedClub) {
       setCurrentClub(selectedClub);
+      setImageLoading(!clubImage);
     }
-  }, [selectedClub, isShuffling]);
+  }, [selectedClub, isShuffling, clubImage]);
 
   useEffect(() => {
     if (isShuffling) {
@@ -104,18 +106,26 @@ const CardShuffle: React.FC<CardShuffleProps> = ({
           <div className="mb-6 flex justify-center">
             <div
               className={`h-24 w-24 overflow-hidden rounded-full border-4 border-white/50 bg-white shadow-lg transition-all duration-300 ${
-                isShuffling ? "animate-bounce" : ""
+                isShuffling || !clubImage ? "animate-pulse" : ""
               }`}
             >
-              <img
-                src={clubImage}
-                alt={currentClub.name}
-                className="h-full w-full object-contain p-2"
-                onError={(e) => {
-                  e.currentTarget.src =
-                    "https://via.placeholder.com/96x96/cccccc/666666?text=FC";
-                }}
-              />
+              {clubImage ? (
+                <img
+                  src={clubImage}
+                  alt={currentClub.name}
+                  className="h-full w-full object-contain p-2"
+                  onLoad={() => setImageLoading(false)}
+                  onError={(e) => {
+                    setImageLoading(false);
+                    e.currentTarget.src =
+                      "https://via.placeholder.com/96x96/cccccc/666666?text=FC";
+                  }}
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-gray-200">
+                  <span className="text-xs text-gray-500">{currentClub.name.substring(0, 2)}</span>
+                </div>
+              )}
             </div>
           </div>
 
