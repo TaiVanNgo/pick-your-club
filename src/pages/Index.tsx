@@ -111,7 +111,7 @@ const Index = () => {
     if (activeClub && activeClub.name) {
       // Clear previous club image immediately when changing clubs
       setClubImage("");
-      
+
       const apiKey = import.meta.env.VITE_API_FOOTBALL_KEY;
 
       getClubDetails(activeClub.name, apiKey).then((image) => {

@@ -123,7 +123,9 @@ const CardShuffle: React.FC<CardShuffleProps> = ({
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-gray-200">
-                  <span className="text-xs text-gray-500">{currentClub.name.substring(0, 2)}</span>
+                  <span className="text-xs text-gray-500">
+                    {currentClub.name.substring(0, 2)}
+                  </span>
                 </div>
               )}
             </div>
