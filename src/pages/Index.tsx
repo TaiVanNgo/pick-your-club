@@ -109,7 +109,7 @@ const Index = () => {
   // ===============================================================
   useEffect(() => {
     if (activeClub && activeClub.name) {
-      const apiKey = "ad1de23ce3a8c2ff7416f93ef2581411";
+      const apiKey = process.env.NEXT_PUBLIC_API_FOOTBALL_KEY;
 
       getClubDetails(activeClub.name, apiKey).then((image) => {
         if (image) {
@@ -323,7 +323,7 @@ const Index = () => {
           {isShuffling || selectedClubs.length > 0 ? (
             <CardShuffle
               key="club-display"
-              clubImage= {clubImage}
+              clubImage={clubImage}
               clubs={filteredClubs}
               isShuffling={isShuffling}
               selectedClub={activeClub}
